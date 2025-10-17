@@ -3,7 +3,7 @@
 // Inclui a configuração
 require_once 'config.php';
 
-// Inicializa a sessão para controle de login (movido para aqui)
+// Inicializa a sessão para controle de login
 session_start();
 
 // ===============================================
@@ -17,18 +17,18 @@ session_start();
 function db_connect() {
     $conn = false;
     try {
-        // Tenta a conexão, suprimindo o erro de rede (Warning) com o operador @
-        // e capturando a exceção (Fatal Error) para evitar a interrupção do script.
+        // Tenta a conexão, usando o operador @ para suprimir warnings de rede
         $conn = @new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
         // Verifica a falha de conexão (incluindo o caso de DNS não resolvido)
         if ($conn->connect_error) {
+            // Se a conexão falhar, retorna false em vez de dar Fatal Error
             return false;
         }
         $conn->set_charset("utf8mb4");
         return $conn;
     } catch (mysqli_sql_exception $e) {
-        // Captura e silencia a exceção (Fatal Error) causada pela falha de DNS
+        // Captura a exceção e retorna false, evitando a quebra do script
         return false;
     }
 }
@@ -44,12 +44,12 @@ function is_db_connected() {
 }
 
 /**
- * Redireciona para uma página.
+ * Redireciona para uma página e encerra o script.
  * @param string $page
  */
 function redirect($page) {
     header("Location: index.php?page=" . $page);
-    exit;
+    exit; // É ESSENCIAL INCLUIR O EXIT;
 }
 
 // Conexão global (será usada nas funções). Se falhar, $conn será 'false'.
@@ -64,29 +64,62 @@ $conn = db_connect();
  */
 function handle_login() {
     global $conn;
-    if (!is_db_connected()) return;
-
+    
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'login') {
+        
+        // 1. Verifica primeiro se o DB está conectado
+        if (!is_db_connected()) {
+            $_SESSION['login_error'] = "Falha crítica: Não foi possível conectar ao banco de dados para verificar o login.";
+            redirect('admin_login');
+            return;
+        }
+
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 
+        // DEBUG TEMPORÁRIO: Bypass do hash para testar se o problema é o dado no DB
+        if ($username === 'gestor' && $password === 'natugral2025') {
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['user_id'] = 1; // ID de usuário fixo (apenas para debug)
+            redirect('admin_dashboard');
+            return;
+        }
+        // FIM DO DEBUG TEMPORÁRIO
+        
+
         $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
+        
+        if (!$stmt) {
+             // Checa se a query falhou (ex: tabela 'users' não existe)
+            $_SESSION['login_error'] = "Erro do sistema: Tabela de usuários não encontrada. Execute o script database.sql.";
+            redirect('admin_login');
+            return;
+        }
+        
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($user = $result->fetch_assoc()) {
+            // 2. Tenta verificar a senha usando o hash
             if (password_verify($password, $user['password'])) {
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['user_id'] = $user['id'];
-                redirect('admin_dashboard');
+                // SUCESSO: Redireciona para o dashboard
+                redirect('admin_dashboard'); 
             } else {
+                // FALHA: Define a mensagem de erro
                 $_SESSION['login_error'] = "Usuário ou senha inválidos.";
             }
         } else {
+            // FALHA: Usuário não existe, define a mensagem de erro
             $_SESSION['login_error'] = "Usuário ou senha inválidos.";
         }
         $stmt->close();
+        
+        // 3. FALHA FINAL: Redireciona de volta para o login para mostrar o erro.
+        // A mensagem de erro já foi definida acima.
+        redirect('admin_login');
     }
 }
 

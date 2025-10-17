@@ -18,12 +18,12 @@ require_once 'functions.php';
                 <div class="flex items-center">
                     <i data-lucide="phone" class="w-6 h-6 mr-3 text-natugral-yellow"></i>
                     <p class="text-gray-700 font-semibold">Telefone/WhatsApp:</p>
-                    <a href="https://wa.me/5588999999999" target="_blank" class="ml-2 text-natugral-green hover:underline">(88) 99999-9999</a>
+                    <a href="https://wa.me/558899998-0476" target="_blank" class="ml-2 text-natugral-green hover:underline">(88)99998-0476</a>
                 </div>
                 <div class="flex items-center">
                     <i data-lucide="mail" class="w-6 h-6 mr-3 text-natugral-yellow"></i>
                     <p class="text-gray-700 font-semibold">E-mail:</p>
-                    <a href="mailto:contato@natugral.com.br" class="ml-2 text-natugral-green hover:underline">contato@natugral.com.br</a>
+                    <a href="mailto:natugral6@gmail.com" class="ml-2 text-natugral-green hover:underline">natugral6@gmail.com</a>
                 </div>
             </div>
 
