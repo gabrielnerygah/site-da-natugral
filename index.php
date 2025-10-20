@@ -324,10 +324,11 @@ function render_product_card($product) {
 
         <!-- Imagem do Produto (Placeholder) -->
 
-        <div class="h-48 w-full bg-natugral-light flex items-center justify-center border-b border-natugral-brown/30">
-
-            <img src="https://placehold.co/400x300/F5F5DC/7F522E?text=<?php echo urlencode($product['name']); ?>" alt="; ?>]" class="object-cover h-full w-full">
-
+       <div class="h-48 w-full bg-natugral-light flex items-center justify-center border-b border-natugral-brown/30">
+            <?php 
+                $img_src = !empty($product['image_url']) ? htmlspecialchars($product['image_url']) : "https://placehold.co/400x300/F5F5DC/7F522E?text=".urlencode($product['name']);
+            ?>
+            <img src="<?= $img_src ?>" alt="Imagem de <?php echo htmlspecialchars($product['name']); ?>" class="object-cover h-full w-full">
         </div>
 
         <div class="p-5">

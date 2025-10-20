@@ -245,14 +245,14 @@ function handle_admin_actions() {
             $price = floatval($_POST['price']);
             $stock = intval($_POST['stock']);
             $is_promo = isset($_POST['is_promo']) ? 1 : 0;
-
+            $image_url = $conn->real_escape_string($_POST['image_url'] ?? ''); // <--- LINHA ADICIONADA
             if ($action === 'add_product') {
-                $stmt = $conn->prepare("INSERT INTO products (name, description, category, price, stock, is_promo) VALUES (?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("sssdii", $name, $description, $category, $price, $stock, $is_promo);
+                $stmt = $conn->prepare("INSERT INTO products (name, description, category, price, stock, is_promo, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("ssddiis", $name, $description, $category, $price, $stock, $is_promo, $image_url);
             } else { // edit_product
                 $id = intval($_POST['product_id']);
-                $stmt = $conn->prepare("UPDATE products SET name=?, description=?, category=?, price=?, stock=?, is_promo=? WHERE id=?");
-                $stmt->bind_param("sssdiii", $name, $description, $category, $price, $stock, $is_promo, $id);
+                $stmt = $conn->prepare("UPDATE products SET name=?, description=?, category=?, price=?, stock=?, is_promo=?, image_url=? WHERE id=?");
+                $stmt->bind_param("ssddiisi", $name, $description, $category, $price, $stock, $is_promo, $image_url, $id);
             }
 
             if ($stmt->execute()) {
