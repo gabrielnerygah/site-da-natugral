@@ -430,29 +430,17 @@ $allowed_pages = [
 // Mapeamento de rotas para nomes de arquivos
 
 $route_map = [
-
-    'home' => 'page/home.php',
-
-    'abelhas' => 'page/products_list.php',
-
-    'mel' => 'page_products/list.php',
-
-    'marcenaria' => 'page/products_list.php',
-
-    'sobre' => 'page/about.php',
-
-    'contato' => 'page/contact.php',
-
-    'chat' => 'page/chat.php',
-
-    'admin_login' => 'page/admin_login.php',
-
-    'admin_dashboard' => 'page/admin_dashboard.php',
-
-    'admin_products' => 'page/admin_products.php',
-
-    'admin_consultations' => 'page/admin_consultations.php',
-
+    'home' => 'page_home.php',
+    'abelhas' => 'page_products_list.php', // Agora aponta para o genérico
+    'mel' => 'page_products_list.php',     // Rota de mel corrigida para 'mel'
+    'marcenaria' => 'page_products_list.php', // Agora aponta para o genérico
+    'sobre' => 'page_about.php',
+    'contato' => 'page_contact.php',
+    'chat' => 'page_chat.php',
+    'admin_login' => 'page_admin_login.php',
+    'admin_dashboard' => 'page_admin_dashboard.php',
+    'admin_products' => 'page_admin_products.php',
+    'admin_consultations' => 'page_admin_consultations.php',
 ];
 
 // Redirecionamento de segurança para Admin

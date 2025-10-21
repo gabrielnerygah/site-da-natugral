@@ -59,7 +59,8 @@ $categories = ['abelhas' => 'Abelhas Sem Ferrão', 'mel' => 'Mel e Derivados', '
                         </option>
                     <?php endforeach; ?>
                 </select>
-                        <input type="url" name="image_url" placeholder="URL da Imagem (Link)" value="<?php echo htmlspecialchars($edit_product['image_url'] ?? ''); ?>" class="w-full p-3 border rounded-lg focus:border-natugral-green" <?= !$db_connected ? 'disabled' : '' ?>>
+                <input type="url" name="image_url" placeholder="URL da Imagem (Link)" value="<?php echo htmlspecialchars($edit_product['image_url'] ?? ''); ?>" class="w-full p-3 border rounded-lg focus:border-natugral-green" <?= !$db_connected ? 'disabled' : '' ?>>
+                <p class="text-xs text-gray-500 mt-1">Dica: Para imagens locais, suba via FTP e use o caminho: /pasta/nome_do_arquivo.jpg</p>
                 <input type="number" name="price" placeholder="Preço (0.00)" step="0.01" min="0" value="<?php echo htmlspecialchars($edit_product['price'] ?? ''); ?>" required class="w-full p-3 border rounded-lg focus:border-natugral-green" <?= !$db_connected ? 'disabled' : '' ?>>
                 <input type="number" name="stock" placeholder="Estoque" min="0" value="<?php echo htmlspecialchars($edit_product['stock'] ?? ''); ?>" required class="w-full p-3 border rounded-lg focus:border-natugral-green" <?= !$db_connected ? 'disabled' : '' ?>>
                 
