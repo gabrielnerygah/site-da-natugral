@@ -300,87 +300,57 @@ function render_footer() {
 
  * Componente de Card de Produto.
 
- * @param array $product
+
 
  */
-
+/**
+ * Componente de Card de Produto.
+ * @param array $product
+ */
 function render_product_card($product) {
-
-    // ... (função render_product_card permanece a mesma)
-
     $title_icon = [
-
         'abelhas' => 'sun',
-
         'mel' => 'bot-message-square',
-
         'marcenaria' => 'hammer',
-
     ];
-
+    
+    // Define a fonte da imagem, usando a URL salva ou um placeholder
+    $img_src = !empty($product['image_url']) 
+               ? htmlspecialchars($product['image_url']) 
+               : "https://placehold.co/400x300/F5F5DC/7F522E?text=".urlencode($product['name']);
+    
     ?>
-
     <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden transform hover:scale-[1.02]">
-
-        <!-- Imagem do Produto (Placeholder) -->
-
-       <div class="h-48 w-full bg-natugral-light flex items-center justify-center border-b border-natugral-brown/30">
-            <?php 
-                $img_src = !empty($product['image_url']) ? htmlspecialchars($product['image_url']) : "https://placehold.co/400x300/F5F5DC/7F522E?text=".urlencode($product['name']);
-            ?>
+        <div class="h-48 w-full bg-natugral-light flex items-center justify-center border-b border-natugral-brown/30">
             <img src="<?= $img_src ?>" alt="Imagem de <?php echo htmlspecialchars($product['name']); ?>" class="object-cover h-full w-full">
         </div>
-
         <div class="p-5">
-
             <h3 class="text-xl font-bold text-natugral-green mb-2 flex items-center">
-
-                <i data-lucide="<?php echo $title_icon[$product['category']]; ?>" class="w-5 h-5 mr-2 text-natugral-yellow fill-natugral-yellow"></i>
-
+                <i data-lucide="<?php echo $title_icon[$product['category']] ?? 'package'; ?>" class="w-5 h-5 mr-2 text-natugral-yellow fill-natugral-yellow"></i>
                 <?php echo htmlspecialchars($product['name']); ?>
-
             </h3>
-
             <p class="text-sm text-gray-600 mb-4 h-12 overflow-hidden"><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
 
             <div class="flex justify-between items-end">
-
                 <?php if ($product['is_promo']): ?>
-
                     <div class="text-left">
-
                         <span class="text-sm text-gray-500 line-through mr-2">R$ <?php echo number_format($product['price'] * 1.25, 2, ',', '.'); ?></span>
-
                         <span class="text-2xl font-extrabold text-red-600">R$ <?php echo number_format($product['price'], 2, ',', '.'); ?></span>
-
                         <span class="block text-xs text-red-600 font-bold">PROMOÇÃO!</span>
-
                     </div>
-
                 <?php else: ?>
-
                     <span class="text-2xl font-extrabold text-natugral-brown">R$ <?php echo number_format($product['price'], 2, ',', '.'); ?></span>
-
                 <?php endif; ?>
 
                 <a href="index.php?page=chat&product=<?php echo urlencode($product['name']); ?>"
-
                    class="bg-natugral-green text-white font-bold py-2 px-4 rounded-full shadow-lg hover:bg-natugral-brown transition duration-300 flex items-center">
-
                     <i data-lucide="message-square-text" class="w-5 h-5 mr-2"></i> Consultar/Comprar
-
                 </a>
-
             </div>
-
             <p class="text-xs mt-2 text-right text-gray-500">Estoque: <?php echo $product['stock'] > 0 ? $product['stock'] . ' unid.' : 'Esgotado'; ?></p>
-
         </div>
-
     </div>
-
     <?php
-
 }
 
 // ===============================================
